@@ -1,0 +1,21 @@
+<!DOCTYPE>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h1> New Person </h1>
+<form action="/persons" method="post">
+    Name: <input type="text" name="personName">
+    <input type="submit">
+</form>
+
+<ul>
+    <li th:each="person : ${persons}">
+        [[${person.personName}]]
+    </li>
+</ul>
+</body>
+</html>
