@@ -2,20 +2,79 @@
 <html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Person List</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
 </head>
 <body>
 
 <h1> New Person </h1>
-<form action="/persons" method="post">
-    Name: <input type="text" name="personName">
-    <input type="submit">
+<form action="/add-person" method="post">
+    Name: <input type="text" name="personName" required>
+    <button type="submit">Add</button>
 </form>
 
-<ul>
-    <li th:each="person : ${persons}">
-        [[${person.personName}]]
-    </li>
-</ul>
+<div>
+    <ul>
+        <li>
+            <a th:href="@{|/persons?page=0&size=${pageSize}|}"
+               th:text="'First'"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{|/persons?page=${currentPage - 1}&size=${pageSize}|}"
+               th:text="'Previous'"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <span th:text="'Page ' + (${currentPage + 1}) + ' of ' + ${totalPages}"></span>
+        </li>
+
+        <li>
+            <a th:href="@{|/persons?page=${currentPage + 1}&size=${pageSize}|}"
+               th:text="'Next'"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{|/persons?page=${totalPages - 1}&size=${pageSize}|}"
+               th:text="'Last'"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            </a>
+        </li>
+    </ul>
+</div>
+
+<table border="2">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr th:each="person : ${persons}">
+        <td>[[${person.personName}]]</td>
+        <td>
+            <form action="/delete-person" method="post" th:inline="none">
+                <input type="hidden" name="personId" th:value="${person.personId}">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+        <td>
+            <!-- Button to go to the update page -->
+            <a th:href="@{|/update-person?personName=${person.personName}|}">
+                <button>Update</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
 </body>
 </html>

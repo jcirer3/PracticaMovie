@@ -1,0 +1,31 @@
+ul {
+    list-style-type: none; /* Removes the default list styling */
+    padding: 0;
+    display: flex; /* Arrange items horizontally */
+    gap: 10px; /* Space between items */
+}
+
+li {
+    display: inline-block; /* Makes each list item display side by side */
+}
+
+a {
+    text-decoration: none; /* Removes underlines */
+    padding: 8px 12px; /* Adds padding around the link */
+    border: 1px solid #ccc; /* Adds border to each page link */
+    border-radius: 4px; /* Rounded corners */
+}
+
+.disabled {
+    pointer-events: none;
+    color: gray;
+    cursor: not-allowed; /* Change cursor to indicate it's disabled */
+}
+
+a:hover {
+    background-color: #f0f0f0; /* Adds hover effect */
+}
+
+a.active {
+    font-weight: bold; /* Highlights the active page */
+}

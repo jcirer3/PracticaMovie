@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Person</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Person</h1>
+<form action="/update-person" method="post">
+    <!-- Hidden field to pass the person's original name -->
+    <input type="hidden" name="oldPersonName" th:value="${person.personName}">
+    <label for="personName">New Name:</label>
+    <input type="text" id="personName" name="personName" th:value="${person.personName}">
+
+    <div th:if="${error}" class="error" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
+    <button type="submit">Update</button>
+</form>
+
+</body>
+</html>

@@ -11,11 +11,11 @@ public class Person {
     @Column(length = 500)
     private String personName;
 
-    public int getPersonId() {
+    public Integer getPersonId() {
         return personId;
     }
 
-    public void setPersonId(int personId) {
+    public void setPersonId(Integer personId) {
         this.personId = personId;
     }
 
