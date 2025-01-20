@@ -33,15 +33,13 @@ public class PersonService {
         }
     }
 
-    public Person getPersonByName(String personName) {
-        return personDAO.findByPersonName(personName);
+    public Person getPersonById(Integer personId) {
+        return personDAO.findById(personId).get();
     }
 
-    public void updatePersonName(String oldPersonName, String newPersonName) {
-        Person person = personDAO.findByPersonName(oldPersonName);
-        if (person != null) {
-            person.setPersonName(newPersonName);
-            personDAO.save(person);
-        }
+    public void updatePersonNameById(Integer personId, String personName) {
+        Person person = personDAO.findById(personId).get();
+        person.setPersonName(personName);
+        personDAO.save(person);
     }
 }

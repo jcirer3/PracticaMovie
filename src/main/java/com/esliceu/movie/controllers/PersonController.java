@@ -42,23 +42,23 @@ public class PersonController {
     }
 
     @GetMapping("/update-person")
-    public String showUpdateForm(@RequestParam String personName, Model model) {
-        Person person = personService.getPersonByName(personName);
+    public String showUpdateForm(@RequestParam Integer personId, Model model) {
+        Person person = personService.getPersonById(personId);
         model.addAttribute("person", person);
         return "updateperson";
     }
 
     @PostMapping("/update-person")
-    public String updatePerson(@RequestParam String oldPersonName, @RequestParam String personName, Model model) {
+    public String updatePerson(@RequestParam Integer personId, @RequestParam String personName, Model model) {
         String trimmedName = personName.trim();
-        if(trimmedName.isEmpty() || personName.startsWith(" ") || personName.endsWith(" ")){
+        if (trimmedName.isEmpty() || personName.startsWith(" ") || personName.endsWith(" ")) {
             model.addAttribute("error", "Name cannot be empty, or have leading/trailing spaces.");
-            Person person = personService.getPersonByName(oldPersonName);
+            Person person = personService.getPersonById(personId);
             model.addAttribute("person", person);
             return "updateperson";
         }
-
-        personService.updatePersonName(oldPersonName, personName);
+        personService.updatePersonNameById(personId, personName);
         return "redirect:/persons";
     }
+
 }

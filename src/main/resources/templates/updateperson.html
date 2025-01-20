@@ -9,8 +9,7 @@
 
 <h1>Update Person</h1>
 <form action="/update-person" method="post">
-    <!-- Hidden field to pass the person's original name -->
-    <input type="hidden" name="oldPersonName" th:value="${person.personName}">
+    <input type="hidden" name="personId" th:value="${person.personId}">
     <label for="personName">New Name:</label>
     <input type="text" id="personName" name="personName" th:value="${person.personName}">
 
