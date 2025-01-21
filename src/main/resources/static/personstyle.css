@@ -1,13 +1,25 @@
+.ui-autocomplete {
+    max-height: 100px;
+    width: 150px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    position: absolute;
+}
+
+
 ul {
     list-style-type: none; /* Removes the default list styling */
     padding: 0;
-    display: flex; /* Arrange items horizontally */
     gap: 10px; /* Space between items */
 }
 
-li {
-    display: inline-block; /* Makes each list item display side by side */
+.pages ul li {
+    display: inline-block; /* Ensures list items are inline */
 }
+
 
 a {
     text-decoration: none; /* Removes underlines */

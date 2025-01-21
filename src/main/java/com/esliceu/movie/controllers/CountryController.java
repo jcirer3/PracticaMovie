@@ -1,8 +1,6 @@
 package com.esliceu.movie.controllers;
 
-import com.esliceu.movie.DAO.CountryDAO;
 import com.esliceu.movie.models.Country;
-import com.esliceu.movie.models.Person;
 import com.esliceu.movie.services.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,6 +20,9 @@ public class CountryController {
             @RequestParam(defaultValue = "20") int size,
             Model model) {
         Page<Country> countryPage = countryService.getPaginatedPersons(page, size);
+
+
+
         model.addAttribute("countrys", countryPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", countryPage.getTotalPages());

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class PersonController {
     @Autowired
@@ -21,6 +23,10 @@ public class PersonController {
             @RequestParam(defaultValue = "20") int size,
             Model model) {
         Page<Person> personPage = personService.getPaginatedPersons(page, size);
+
+        String jsonToSend = personService.getPersonJson();
+        model.addAttribute("jsonInfo", jsonToSend);
+
         model.addAttribute("persons", personPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", personPage.getTotalPages());
@@ -29,9 +35,36 @@ public class PersonController {
         return "persons";
     }
 
+    @PostMapping("/persons")
+    public String searchPeron(@RequestParam String personName, Model model){
+        List<Person> persons = personService.findByName(personName);
+        model.addAttribute("persons", persons);
+        model.addAttribute("currentPage", 0);
+        model.addAttribute("totalPages", 1);
+        model.addAttribute("pageSize", persons.size());
+        return "persons";
+    }
+
     @PostMapping("/add-person")
-    public String newPerson(@RequestParam String personName) {
-        personService.savePerson(personName);
+    public String newPerson(@RequestParam String personName, Model model) {
+        String message = personService.savePerson(personName);
+
+        if (message != null){
+            List<Person> persons = personService.findByName(personName);
+            model.addAttribute("persons", persons);
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("totalPages", 1);
+            model.addAttribute("pageSize", persons.size());
+            model.addAttribute("message", message);
+            return "persons";
+        }
+
+        List<Person> persons = personService.findByName(personName);
+        model.addAttribute("persons", persons);
+        model.addAttribute("currentPage", 0);
+        model.addAttribute("totalPages", 1);
+        model.addAttribute("pageSize", persons.size());
+        model.addAttribute("message", "El usuario ha sido creado correctamente.");
         return "redirect:/persons";
     }
 
@@ -57,8 +90,17 @@ public class PersonController {
             model.addAttribute("person", person);
             return "updateperson";
         }
-        personService.updatePersonNameById(personId, personName);
-        return "redirect:/persons";
+        String message = personService.updatePersonNameById(personId, personName);
+        System.out.println(message);
+        if (message != null) {
+            model.addAttribute("error", message);
+            Person person = personService.getPersonById(personId);
+            model.addAttribute("person", person);
+            return "updateperson";
+        }
+        model.addAttribute("error", "El usuario ha sido modificado con éxito.");
+        Person person = personService.getPersonById(personId);
+        model.addAttribute("person", person);
+        return "updateperson";
     }
-
 }

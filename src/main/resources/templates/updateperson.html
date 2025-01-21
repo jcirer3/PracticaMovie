@@ -12,13 +12,19 @@
     <input type="hidden" name="personId" th:value="${person.personId}">
     <label for="personName">New Name:</label>
     <input type="text" id="personName" name="personName" th:value="${person.personName}">
+    <button type="submit">Update</button>
 
     <div th:if="${error}" class="error" style="color: red;">
         <p th:text="${error}"></p>
     </div>
 
-    <button type="submit">Update</button>
 </form>
+
+<br>
+
+<a th:href="@{/persons}">
+    <button>Volver</button>
+</a>
 
 </body>
 </html>
