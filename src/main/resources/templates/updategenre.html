@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Genre</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Genre</h1>
+<form action="/update-genre" method="post">
+    <input type="hidden" name="genreId" th:value="${genre.genreId}">
+    <label for="genreName">New Name:</label>
+    <input type="text" id="genreName" name="genreName" th:value="${genre.genreName}">
+    <button type="submit">Update</button>
+
+    <div th:if="${error}" class="error" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
+</form>
+
+<br>
+
+<a th:href="@{/genres}">
+    <button>Volver</button>
+</a>
+
+</body>
+</html>
