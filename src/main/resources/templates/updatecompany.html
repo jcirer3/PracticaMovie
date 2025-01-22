@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Company</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Company</h1>
+<form action="/update-company" method="post">
+    <input type="hidden" name="companyId" th:value="${company.companyId}">
+    <label for="companyName">New Name:</label>
+    <input type="text" id="companyName" name="companyName" th:value="${company.companyName}">
+    <button type="submit">Update</button>
+
+    <div th:if="${error}" class="error" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
+</form>
+
+<br>
+
+<a th:href="@{/companys}">
+    <button>Volver</button>
+</a>
+
+</body>
+</html>
