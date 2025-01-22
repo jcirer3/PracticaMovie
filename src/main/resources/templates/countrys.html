@@ -3,9 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>Country List</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="person.js" defer></script>
     <link rel="stylesheet" type="text/css" href="personstyle.css">
 </head>
 <body>
+<script th:inline="javascript">
+    var jsonInfo = /*[[${jsonInfo}]]*/ {};
+
+</script>
+
+<div class="ui-widget">
+    <form action="/countrys" method="post">
+        <label for="tags">Nombre del país: </label>
+        <input type="text" id="tags" name="countryName">
+        <input type="submit" value="Buscar">
+    </form>
+    <form action="/countrys" method="get">
+        <input type="submit" value="All">
+    </form>
+
+</div>
 
 <h1> New Country </h1>
 <form action="/add-country" method="post">
@@ -13,7 +33,11 @@
     <button type="submit">Add</button>
 </form>
 
-<div>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<div class="pages">
     <ul>
         <li>
             <a th:href="@{|/countrys?page=0&size=${pageSize}|}"
@@ -51,16 +75,14 @@
 
 <table border="2">
     <thead>
-        <tr>
-            <th>Iso Code</th>
-            <th>Nombre</th>
-            <th>Delete</th>
-            <th>Update</th>
-        </tr>
+    <tr>
+        <th>Nombre</th>
+        <th>Delete</th>
+        <th>Update</th>
+    </tr>
     </thead>
     <tbody>
     <tr th:each="country : ${countrys}">
-        <td>[[${country.countryIsoCode}]]</td>
         <td>[[${country.countryName}]]</td>
         <td>
             <form action="/delete-country" method="post" th:inline="none">
@@ -70,7 +92,7 @@
         </td>
         <td>
             <!-- Button to go to the update page -->
-            <a th:href="@{|/update-country?countryName=${country.countryName}|}">
+            <a th:href="@{|/update-country?countryId=${country.countryId}|}">
                 <button>Update</button>
             </a>
         </td>
