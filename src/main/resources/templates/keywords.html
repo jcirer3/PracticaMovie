@@ -1,0 +1,104 @@
+<!DOCTYPE>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Keyword List</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="person.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+<script th:inline="javascript">
+    var jsonInfo = /*[[${jsonInfo}]]*/ {};
+
+</script>
+
+<div class="ui-widget">
+    <form action="/keywords" method="post">
+        <label for="tags">Nombre de la keyword: </label>
+        <input type="text" id="tags" name="keywordName">
+        <input type="submit" value="Buscar">
+    </form>
+    <form action="/keywords" method="get">
+        <input type="submit" value="All">
+    </form>
+
+</div>
+
+<h1> New Keyword </h1>
+<form action="/add-keyword" method="post">
+    Name: <input type="text" name="keywordName" required>
+    <button type="submit">Add</button>
+</form>
+
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<div class="pages">
+    <ul>
+        <li>
+            <a th:href="@{|/keywords?page=0&size=${pageSize}|}"
+               th:text="'First'"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{|/keywords?page=${currentPage - 1}&size=${pageSize}|}"
+               th:text="'Previous'"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <span th:text="'Page ' + (${currentPage + 1}) + ' of ' + ${totalPages}"></span>
+        </li>
+
+        <li>
+            <a th:href="@{|/keywords?page=${currentPage + 1}&size=${pageSize}|}"
+               th:text="'Next'"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{|/keywords?page=${totalPages - 1}&size=${pageSize}|}"
+               th:text="'Last'"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            </a>
+        </li>
+    </ul>
+</div>
+
+<table border="2">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Delete</th>
+            <th>Update</th>
+        </tr>
+    </thead>
+    <tbody>
+    <tr th:each="keyword : ${keywords}">
+        <td>[[${keyword.keywordName}]]</td>
+        <td>
+            <form action="/delete-keyword" method="post" th:inline="none">
+                <input type="hidden" name="keywordId" th:value="${keyword.keywordId}">
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+        <td>
+            <!-- Button to go to the update page -->
+            <a th:href="@{|/update-keyword?keywordId=${keyword.keywordId}|}">
+                <button>Update</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

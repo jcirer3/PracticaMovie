@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Keyword</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Keyword</h1>
+<form action="/update-keyword" method="post">
+    <input type="hidden" name="keywordId" th:value="${keyword.keywordId}">
+    <label for="keywordName">New Name:</label>
+    <input type="text" id="keywordName" name="keywordName" th:value="${keyword.keywordName}">
+    <button type="submit">Update</button>
+
+    <div th:if="${error}" class="error" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
+</form>
+
+<br>
+
+<a th:href="@{/keywords}">
+    <button>Volver</button>
+</a>
+
+</body>
+</html>
