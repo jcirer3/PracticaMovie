@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Movie {
@@ -14,6 +16,28 @@ public class Movie {
 
     @Column(length = 1000)
     private String title;
+
+    @OneToMany(mappedBy = "movie")
+    Set<MovieCompany> companies;
+
+    @OneToMany(mappedBy = "movie")
+    Set<MovieGenres> genres;
+
+    public Set<MovieGenres> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<MovieGenres> genres) {
+        this.genres = genres;
+    }
+
+    public Set<MovieCompany> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<MovieCompany> companies) {
+        this.companies = companies;
+    }
 
     private Integer budget;
 

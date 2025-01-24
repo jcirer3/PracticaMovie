@@ -1,0 +1,102 @@
+<!DOCTYPE>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Person List</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="movie.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+<script th:inline="javascript">
+    var jsonInfo = /*[[${jsonInfo}]]*/ {};
+
+</script>
+
+<div class="ui-widget">
+    <form action="/movies" method="post">
+        <label for="tags">Busca por:</label>
+        <select id="tags" name="tags">
+            <option value="">Elige una opción</option>
+            <option value="todas">Todas las películas</option>
+            <option value="actor">Actor</option>
+            <option value="character">Personaje</option>
+            <option value="title">Título</option>
+            <option value="genre">Género</option>
+            <option value="director">Director</option>
+        </select>
+
+        <!-- Campo de texto para la palabra clave, inicialmente oculto -->
+        <input type="text" id="keyword" name="keyword" placeholder="Buscar..." style="display:none;">
+
+        <input type="submit" value="Buscar">
+    </form>
+
+</div>
+
+
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
+<div class="pages">
+    <ul>
+        <li>
+            <a th:href="@{|/movies?page=0&size=${pageSize}|}"
+               th:text="'First'"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{|/movies?page=${currentPage - 1}&size=${pageSize}|}"
+               th:text="'Previous'"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <span th:text="'Page ' + (${currentPage + 1}) + ' of ' + ${totalPages}"></span>
+        </li>
+
+        <li>
+            <a th:href="@{|/movies?page=${currentPage + 1}&size=${pageSize}|}"
+               th:text="'Next'"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            </a>
+        </li>
+
+        <li>
+            <a th:href="@{|/movies?page=${totalPages - 1}&size=${pageSize}|}"
+               th:text="'Last'"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+            </a>
+        </li>
+    </ul>
+</div>
+
+<table border="2">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Título</th>
+        <th>Overview</th>
+        <th>Popularity</th>
+        <th>ReleaseDate</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="movie : ${movies}">
+        <td>[[${movie.movieId}]]</td>
+        <td>[[${movie.title}]]</td>
+        <td>[[${movie.overview}]]</td>
+        <td>[[${movie.popularity}]]</td>
+        <td>[[${movie.releaseDate}]]</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

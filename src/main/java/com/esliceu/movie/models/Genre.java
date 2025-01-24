@@ -2,6 +2,8 @@ package com.esliceu.movie.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Genre {
     @Id
@@ -10,6 +12,17 @@ public class Genre {
 
     @Column(length = 100)
     private String genreName;
+
+    @OneToMany(mappedBy = "genre")
+    private Set<MovieGenres> movies;
+
+    public Set<MovieGenres> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<MovieGenres> movies) {
+        this.movies = movies;
+    }
 
     public Integer getGenreId() {
         return genreId;
