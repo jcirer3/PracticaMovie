@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Language</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Language</h1>
+<form action="/update-language" method="post">
+    <input type="hidden" name="languageId" th:value="${language.languageId}">
+    <label for="languageName">New Name:</label>
+    <input type="text" id="languageName" name="languageName" th:value="${language.languageName}">
+    <button type="submit">Update</button>
+
+    <div th:if="${error}" class="error" style="color: red;">
+        <p th:text="${error}"></p>
+    </div>
+
+</form>
+
+<br>
+
+<a th:href="@{/languages}">
+    <button>Volver</button>
+</a>
+
+</body>
+</html>
