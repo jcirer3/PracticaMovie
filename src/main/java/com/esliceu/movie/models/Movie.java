@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -17,11 +16,33 @@ public class Movie {
     @Column(length = 1000)
     private String title;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
     Set<MovieCompany> companies;
 
-    @OneToMany(mappedBy = "movie")
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
     Set<MovieGenres> genres;
+
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    Set<MovieCast> characterName;
+
+    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    Set<MovieCast> castOrder;
+
+    public Set<MovieCast> getCharacterName() {
+        return characterName;
+    }
+
+    public void setCharacterName(Set<MovieCast> characterName) {
+        this.characterName = characterName;
+    }
+
+    public Set<MovieCast> getCastOrder() {
+        return castOrder;
+    }
+
+    public void setCastOrder(Set<MovieCast> castOrder) {
+        this.castOrder = castOrder;
+    }
 
     public Set<MovieGenres> getGenres() {
         return genres;

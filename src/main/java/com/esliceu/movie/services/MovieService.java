@@ -1,9 +1,11 @@
 package com.esliceu.movie.services;
 
 import com.esliceu.movie.DAO.GenreDAO;
+import com.esliceu.movie.DAO.MovieCastDAO;
 import com.esliceu.movie.DAO.MovieDAO;
 import com.esliceu.movie.models.Genre;
 import com.esliceu.movie.models.Movie;
+import com.esliceu.movie.models.MovieCast;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,7 +24,8 @@ public class MovieService {
     MovieDAO movieDAO;
     @Autowired
     GenreDAO genreDAO;
-
+    @Autowired
+    MovieCastDAO movieCastDAO;
     public Page<Movie> getPaginatedMovies(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieDAO.findAll(pageable);
@@ -62,11 +65,25 @@ public class MovieService {
     public List<Movie> findMoviesByGenre(String keyword) {
         return movieDAO.findByGenreNameNative(keyword);
     }
+    public List<Movie> findMoviesByCharacter(String keyword){
+        return movieDAO.findByCharacterNameNative(keyword);
+    }
 
     public String getGenreJson() {
         List<Genre> genres = genreDAO.findAll();
         List<String> names = genres.stream()
                 .map(m -> m.getGenreName())
+                .collect(Collectors.toList());
+
+        Gson gson = new Gson();
+        String result = gson.toJson(names);
+        return result;
+    }
+
+    public String getCharacterJson(){
+        List<MovieCast> characters = movieCastDAO.findAll();
+        List<String> names = characters.stream()
+                .map(n -> n.getCharacterName())
                 .collect(Collectors.toList());
 
         Gson gson = new Gson();

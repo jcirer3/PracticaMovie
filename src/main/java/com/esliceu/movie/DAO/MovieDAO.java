@@ -19,8 +19,12 @@ public interface MovieDAO extends JpaRepository<Movie, Integer> {
             "WHERE g.genre_name = :genreName", nativeQuery = true)
     List<Movie> findByGenreNameNative(@Param("genreName") String genreName);
 
+    @Query(value = "SELECT DISTINCT m.* FROM movie m " +
+            "JOIN movie_cast mc ON m.movie_id = mc.movie_id " +
+            "WHERE mc.character_name = :characterName", nativeQuery = true)
+    List<Movie> findByCharacterNameNative(@Param("characterName") String characterName);
+
 
     //Movie findByActor(String keyword);
-    //Movie findByCharacter(String keyword);
     //Movie findByDirector(String keyword);
 }

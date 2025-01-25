@@ -4,7 +4,8 @@ $(function() {
     // Solo activar el autocompletado si el select tiene la opción de 'title'
     $("#tags").on("change", function() {
         var selectedValue = $(this).val();
-        if (selectedValue === "title" || selectedValue === "genre") {
+        console.log(selectedValue)
+        if (selectedValue === "title" || selectedValue === "genre" || selectedValue === "character") {
             $("#keyword").autocomplete({
                 source: function(request, response) {
                     var resultados = $.grep(datos, function(item) {

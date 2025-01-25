@@ -2,6 +2,8 @@ package com.esliceu.movie.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Person {
     @Id
@@ -10,6 +12,28 @@ public class Person {
 
     @Column(length = 500)
     private String personName;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    Set<MovieCast> characterName;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    Set<MovieCast> castOrder;
+
+    public Set<MovieCast> getCharacterName() {
+        return characterName;
+    }
+
+    public void setCharacterName(Set<MovieCast> characterName) {
+        this.characterName = characterName;
+    }
+
+    public Set<MovieCast> getCastOrder() {
+        return castOrder;
+    }
+
+    public void setCastOrder(Set<MovieCast> castOrder) {
+        this.castOrder = castOrder;
+    }
 
     public Integer getPersonId() {
         return personId;
