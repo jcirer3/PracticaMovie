@@ -2,6 +2,8 @@ package com.esliceu.movie.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Keyword {
     @Id
@@ -10,6 +12,17 @@ public class Keyword {
 
     @Column(length = 100)
     private String keywordName;
+
+    @OneToMany(mappedBy = "keyword")
+    private Set<MovieKeywords> movies;
+
+    public Set<MovieKeywords> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<MovieKeywords> movies) {
+        this.movies = movies;
+    }
 
     public Integer getKeywordId() {
         return keywordId;

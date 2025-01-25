@@ -2,6 +2,8 @@ package com.esliceu.movie.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Language {
     @Id
@@ -13,6 +15,17 @@ public class Language {
 
     @Column(length = 500)
     private String languageName;
+
+    @OneToMany(mappedBy = "language")
+    private Set<MovieLanguages> movies;
+
+    public Set<MovieLanguages> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Set<MovieLanguages> movies) {
+        this.movies = movies;
+    }
 
     public Integer getLanguageId() {
         return languageId;

@@ -31,6 +31,39 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     Set<MovieCrew> job;
 
+    @OneToMany(mappedBy = "movie")
+    Set<ProductionCountry> countries;
+
+    @OneToMany(mappedBy = "movie")
+    Set<MovieKeywords> keywords;
+
+    @OneToMany(mappedBy = "movie")
+    Set<MovieLanguages> languages;
+
+    public Set<MovieLanguages> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<MovieLanguages> languages) {
+        this.languages = languages;
+    }
+
+    public Set<ProductionCountry> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(Set<ProductionCountry> countries) {
+        this.countries = countries;
+    }
+
+    public Set<MovieKeywords> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(Set<MovieKeywords> keywords) {
+        this.keywords = keywords;
+    }
+
     public Set<MovieCrew> getJob() {
         return job;
     }

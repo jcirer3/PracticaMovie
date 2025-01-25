@@ -60,7 +60,17 @@ public class MovieController {
             model.addAttribute("currentPage", 0);
             model.addAttribute("totalPages", 1);
             model.addAttribute("pageSize", movies.size());
-        }  else if (tags.equals("character")) {
+        } else if (tags.equals("actor")) {
+            List<Movie> movies = movieService.findMoviesByActor(keyword);
+            
+            String jsonToSend = movieService.getActorsJson();
+            model.addAttribute("jsonInfo", jsonToSend);
+
+            model.addAttribute("movies", movies);
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("totalPages", 1);
+            model.addAttribute("pageSize", movies.size());
+        } else if (tags.equals("character")) {
             List<Movie> movies = movieService.findMoviesByCharacter(keyword);
 
             String jsonToSend = movieService.getCharacterJson();

@@ -13,7 +13,7 @@ public class ProductionCompany {
     private String companyName;
 
     @OneToMany(mappedBy = "productionCompany")
-    private Set<MovieCompany> movies; // Relación con MovieCompany
+    private Set<MovieCompany> movies;
 
     public Set<MovieCompany> getMovies() {
         return movies;

@@ -6,7 +6,7 @@ $(function() {
         var selectedValue = $(this).val();
         console.log(selectedValue)
         if (selectedValue === "title" || selectedValue === "genre" || selectedValue === "character"
-        || selectedValue === "director") {
+        || selectedValue === "director" || selectedValue === "actor") {
             $("#keyword").autocomplete({
                 source: function(request, response) {
                     var resultados = $.grep(datos, function(item) {

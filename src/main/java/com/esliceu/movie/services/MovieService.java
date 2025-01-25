@@ -98,7 +98,6 @@ public class MovieService {
     }
 
     public String getDirectorsJson() {
-        // Obtener todos los MovieCrew relacionados con directores
         List<MovieCrew> movieCrews = movieCrewDAO.findDirectorsWithPerson();
 
         List<String> directors = movieCrews.stream()
@@ -110,7 +109,20 @@ public class MovieService {
         return gson.toJson(directors);
     }
 
+    public String getActorsJson() {
+        // Usar la consulta optimizada para obtener solo los nombres de los actores
+        List<String> actors = movieCastDAO.findDistinctActorNames();
+
+        // Convertir la lista de nombres de actores a JSON
+        Gson gson = new Gson();
+        return gson.toJson(actors);
+    }
+
     public List<Movie> findMoviesByDirector(String keyword) {
         return movieDAO.findMoviesByDirector("director", keyword);
+    }
+
+    public List<Movie> findMoviesByActor(String actorName) {
+        return movieCastDAO.findMoviesByActorName(actorName);
     }
 }
