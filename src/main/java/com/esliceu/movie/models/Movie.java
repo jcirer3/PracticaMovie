@@ -16,16 +16,16 @@ public class Movie {
     @Column(length = 1000)
     private String title;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie")
     Set<MovieCompany> companies;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie")
     Set<MovieGenres> genres;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie")
     Set<MovieCast> characterName;
 
-    @OneToMany(mappedBy = "movie", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "movie")
     Set<MovieCast> castOrder;
 
     public Set<MovieCast> getCharacterName() {

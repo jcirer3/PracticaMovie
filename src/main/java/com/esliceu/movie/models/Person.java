@@ -13,10 +13,10 @@ public class Person {
     @Column(length = 500)
     private String personName;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "person")
     Set<MovieCast> characterName;
 
-    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "person")
     Set<MovieCast> castOrder;
 
     public Set<MovieCast> getCharacterName() {

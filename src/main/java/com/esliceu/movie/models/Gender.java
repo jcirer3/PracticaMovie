@@ -13,10 +13,10 @@ public class Gender {
     @Column(length = 20)
     private String gender;
 
-    @OneToMany(mappedBy = "gender", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gender")
     Set<MovieCast> characterName;
 
-    @OneToMany(mappedBy = "gender", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "gender")
     Set<MovieCast> castOrder;
 
     public Set<MovieCast> getCharacterName() {
