@@ -1,6 +1,8 @@
 package com.esliceu.movie.services;
 
+import com.esliceu.movie.DAO.GenreDAO;
 import com.esliceu.movie.DAO.MovieDAO;
+import com.esliceu.movie.models.Genre;
 import com.esliceu.movie.models.Movie;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +11,17 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
 public class MovieService {
     @Autowired
     MovieDAO movieDAO;
+    @Autowired
+    GenreDAO genreDAO;
 
     public Page<Movie> getPaginatedMovies(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -51,5 +57,20 @@ public class MovieService {
                 //return movieDAO.findByDirector(keyword);
         }
         return null;
+    }
+
+    public List<Movie> findMoviesByGenre(String keyword) {
+        return movieDAO.findByGenreNameNative(keyword);
+    }
+
+    public String getGenreJson() {
+        List<Genre> genres = genreDAO.findAll();
+        List<String> names = genres.stream()
+                .map(m -> m.getGenreName())
+                .collect(Collectors.toList());
+
+        Gson gson = new Gson();
+        String result = gson.toJson(names);
+        return result;
     }
 }

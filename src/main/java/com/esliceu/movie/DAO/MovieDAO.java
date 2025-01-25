@@ -4,12 +4,23 @@ import com.esliceu.movie.models.Movie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface MovieDAO extends JpaRepository<Movie, Integer> {
     Page<Movie> findAll(Pageable pageable);
     Movie findByTitle(String title);
+
+    @Query(value = "SELECT DISTINCT m.* FROM movie m " +
+            "JOIN movie_genres mg ON m.movie_id = mg.movie_id " +
+            "JOIN genre g ON mg.genre_id = g.genre_id " +
+            "WHERE g.genre_name = :genreName", nativeQuery = true)
+    List<Movie> findByGenreNameNative(@Param("genreName") String genreName);
+
+
     //Movie findByActor(String keyword);
     //Movie findByCharacter(String keyword);
-    //Movie findByGenre(String keyword);
     //Movie findByDirector(String keyword);
 }

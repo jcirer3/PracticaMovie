@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class MovieController {
 
@@ -38,15 +40,28 @@ public class MovieController {
             model.addAttribute("totalPages", moviePage.getTotalPages());
             model.addAttribute("totalItems", moviePage.getTotalElements());
             model.addAttribute("pageSize", size);
+        } else if (tags.equals("genre")) {
+            List<Movie> movies = movieService.findMoviesByGenre(keyword);
+
+            String jsonToSend = movieService.getGenreJson();
+            model.addAttribute("jsonInfo", jsonToSend);
+
+            model.addAttribute("movies", movies);
+            model.addAttribute("currentPage", 0);
+            model.addAttribute("totalPages", 1);
+            model.addAttribute("pageSize", movies.size());
         } else {
-            Movie movies = movieService.searchMovies(tags, keyword);
-            String jsonToSend = movieService.getMovieJson();  // Obtén los títulos de películas en formato JSON
-            model.addAttribute("jsonInfo", jsonToSend);  // Pasa el JSON al frontend
+            Movie movie = movieService.searchMovies(tags, keyword);
+
+            String jsonToSend = movieService.getMovieJson();
+            model.addAttribute("jsonInfo", jsonToSend);
+
+            model.addAttribute("movies", movie);
             model.addAttribute("currentPage", 0);
             model.addAttribute("totalPages", 1);
             model.addAttribute("pageSize", 1);
-            model.addAttribute("movies", movies);
         }
         return "movies";
     }
+
 }

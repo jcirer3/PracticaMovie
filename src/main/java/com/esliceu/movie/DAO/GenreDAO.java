@@ -5,8 +5,14 @@ import com.esliceu.movie.models.Person;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface GenreDAO extends JpaRepository<Genre, Integer> {
     Page<Genre> findAll(Pageable pageable);
     Genre findByGenreName(String genreName);
+
+    @Query("SELECT DISTINCT g.genreName FROM Genre g")
+    List<String> getAllGenres();
 }
