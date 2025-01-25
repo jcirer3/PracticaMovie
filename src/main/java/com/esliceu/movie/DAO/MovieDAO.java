@@ -24,7 +24,10 @@ public interface MovieDAO extends JpaRepository<Movie, Integer> {
             "WHERE mc.character_name = :characterName", nativeQuery = true)
     List<Movie> findByCharacterNameNative(@Param("characterName") String characterName);
 
+    @Query("SELECT m FROM Movie m JOIN m.job mc WHERE mc.job = :jobName AND mc.person.personName = :directorName")
+    List<Movie> findMoviesByDirector(@Param("jobName") String jobName, @Param("directorName") String directorName);
+
+
 
     //Movie findByActor(String keyword);
-    //Movie findByDirector(String keyword);
 }

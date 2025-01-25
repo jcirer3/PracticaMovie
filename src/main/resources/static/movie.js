@@ -5,7 +5,8 @@ $(function() {
     $("#tags").on("change", function() {
         var selectedValue = $(this).val();
         console.log(selectedValue)
-        if (selectedValue === "title" || selectedValue === "genre" || selectedValue === "character") {
+        if (selectedValue === "title" || selectedValue === "genre" || selectedValue === "character"
+        || selectedValue === "director") {
             $("#keyword").autocomplete({
                 source: function(request, response) {
                     var resultados = $.grep(datos, function(item) {

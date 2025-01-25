@@ -28,6 +28,17 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     Set<MovieCast> castOrder;
 
+    @OneToMany(mappedBy = "movie")
+    Set<MovieCrew> job;
+
+    public Set<MovieCrew> getJob() {
+        return job;
+    }
+
+    public void setJob(Set<MovieCrew> job) {
+        this.job = job;
+    }
+
     public Set<MovieCast> getCharacterName() {
         return characterName;
     }

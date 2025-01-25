@@ -2,10 +2,12 @@ package com.esliceu.movie.services;
 
 import com.esliceu.movie.DAO.GenreDAO;
 import com.esliceu.movie.DAO.MovieCastDAO;
+import com.esliceu.movie.DAO.MovieCrewDAO;
 import com.esliceu.movie.DAO.MovieDAO;
 import com.esliceu.movie.models.Genre;
 import com.esliceu.movie.models.Movie;
 import com.esliceu.movie.models.MovieCast;
+import com.esliceu.movie.models.MovieCrew;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,10 @@ public class MovieService {
     GenreDAO genreDAO;
     @Autowired
     MovieCastDAO movieCastDAO;
+    @Autowired
+    MovieCrewDAO movieCrewDAO;
+
+
     public Page<Movie> getPaginatedMovies(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieDAO.findAll(pageable);
@@ -89,5 +95,22 @@ public class MovieService {
         Gson gson = new Gson();
         String result = gson.toJson(names);
         return result;
+    }
+
+    public String getDirectorsJson() {
+        // Obtener todos los MovieCrew relacionados con directores
+        List<MovieCrew> movieCrews = movieCrewDAO.findDirectorsWithPerson();
+
+        List<String> directors = movieCrews.stream()
+                .map(mc -> mc.getPerson().getPersonName())
+                .distinct()
+                .collect(Collectors.toList());
+
+        Gson gson = new Gson();
+        return gson.toJson(directors);
+    }
+
+    public List<Movie> findMoviesByDirector(String keyword) {
+        return movieDAO.findMoviesByDirector("director", keyword);
     }
 }

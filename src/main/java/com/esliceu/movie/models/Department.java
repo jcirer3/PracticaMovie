@@ -2,6 +2,8 @@ package com.esliceu.movie.models;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 public class Department {
     @Id
@@ -10,6 +12,17 @@ public class Department {
 
     @Column(length = 200)
     private String departmentName;
+
+    @OneToMany(mappedBy = "department")
+    Set<MovieCrew> job;
+
+    public Set<MovieCrew> getJob() {
+        return job;
+    }
+
+    public void setJob(Set<MovieCrew> job) {
+        this.job = job;
+    }
 
     public Integer getDepartmentId() {
         return departmentId;

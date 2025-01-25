@@ -19,6 +19,17 @@ public class Person {
     @OneToMany(mappedBy = "person")
     Set<MovieCast> castOrder;
 
+    @OneToMany(mappedBy = "person")
+    Set<MovieCrew> job;
+
+    public Set<MovieCrew> getJob() {
+        return job;
+    }
+
+    public void setJob(Set<MovieCrew> job) {
+        this.job = job;
+    }
+
     public Set<MovieCast> getCharacterName() {
         return characterName;
     }
