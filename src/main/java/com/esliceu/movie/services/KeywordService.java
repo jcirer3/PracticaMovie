@@ -80,4 +80,9 @@ public class KeywordService {
         keywordList.add(keyword);
         return keywordList;
     }
+
+    public Integer getKeywordIdByName(String keywordName) {
+        Keyword keyword = keywordDAO.findByKeywordName(keywordName);
+        return keyword.getKeywordId();
+    }
 }

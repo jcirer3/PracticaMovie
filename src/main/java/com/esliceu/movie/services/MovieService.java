@@ -1,9 +1,6 @@
 package com.esliceu.movie.services;
 
-import com.esliceu.movie.DAO.GenreDAO;
-import com.esliceu.movie.DAO.MovieCastDAO;
-import com.esliceu.movie.DAO.MovieCrewDAO;
-import com.esliceu.movie.DAO.MovieDAO;
+import com.esliceu.movie.DAO.*;
 import com.esliceu.movie.models.Genre;
 import com.esliceu.movie.models.Movie;
 import com.esliceu.movie.models.MovieCast;
@@ -30,6 +27,8 @@ public class MovieService {
     MovieCastDAO movieCastDAO;
     @Autowired
     MovieCrewDAO movieCrewDAO;
+    @Autowired
+    MovieKeywordDAO movieKeywordDAO;
 
 
     public Page<Movie> getPaginatedMovies(int page, int size) {
@@ -124,5 +123,25 @@ public class MovieService {
 
     public List<Movie> findMoviesByActor(String actorName) {
         return movieCastDAO.findMoviesByActorName(actorName);
+    }
+
+    public Movie searchMoviesByTitle(String keyword) {
+        return movieDAO.findByTitle(keyword);
+    }
+
+    public void deleteMovie(Integer movieId) {
+        movieDAO.deleteById(movieId);
+    }
+
+    public void save(Movie movie) {
+        movieDAO.save(movie);
+    }
+
+    public Movie findById(Integer movieId) {
+        return movieDAO.findById(movieId).get();
+    }
+
+    public void deleteKeyword(Integer movieId, Integer keywordId) {
+        movieKeywordDAO.deleteByMovieIdAndKeywordId(movieId, keywordId);
     }
 }

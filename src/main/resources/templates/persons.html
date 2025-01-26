@@ -22,10 +22,14 @@
         <input type="submit" value="Buscar">
     </form>
     <form action="/persons" method="get">
-        <input type="submit" value="All">
+        <input type="submit" value="Todas">
     </form>
-
+    <a th:href="@{/home}">
+        <button>Volver</button>
+    </a>
 </div>
+
+
 
 <h1> New Person </h1>
 <form action="/add-person" method="post">

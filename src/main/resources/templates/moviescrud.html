@@ -2,7 +2,7 @@
 <html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Country List</title>
+    <title>Person List</title>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -16,24 +16,17 @@
 </script>
 
 <div class="ui-widget">
-    <form action="/countrys" method="post">
-        <label for="tags">Nombre del país: </label>
-        <input type="text" id="tags" name="countryName">
+    <form action="/moviescrud" method="post">
+        <label for="tags">Nombre de la película: </label>
+        <input type="text" id="tags" name="tags">
         <input type="submit" value="Buscar">
     </form>
-    <form action="/countrys" method="get">
-        <input type="submit" value="Todos">
-    </form>
-    <a th:href="@{/home}">
+    <a th:href="@{/home }">
         <button>Volver</button>
     </a>
 </div>
 
-<h1> New Country </h1>
-<form action="/add-country" method="post">
-    Name: <input type="text" name="countryName" required>
-    <button type="submit">Add</button>
-</form>
+<a href="/moviecreate">Crea una nueva pelicula</a>
 
 <div th:if="${message}">
     <p th:text="${message}"></p>
@@ -42,14 +35,14 @@
 <div class="pages">
     <ul>
         <li>
-            <a th:href="@{|/countrys?page=0&size=${pageSize}|}"
+            <a th:href="@{|/moviescrud?page=0&size=${pageSize}|}"
                th:text="'First'"
                th:classappend="${currentPage == 0} ? 'disabled' : ''">
             </a>
         </li>
 
         <li>
-            <a th:href="@{|/countrys?page=${currentPage - 1}&size=${pageSize}|}"
+            <a th:href="@{|/moviescrud?page=${currentPage - 1}&size=${pageSize}|}"
                th:text="'Previous'"
                th:classappend="${currentPage == 0} ? 'disabled' : ''">
             </a>
@@ -60,14 +53,14 @@
         </li>
 
         <li>
-            <a th:href="@{|/countrys?page=${currentPage + 1}&size=${pageSize}|}"
+            <a th:href="@{|/moviescrud?page=${currentPage + 1}&size=${pageSize}|}"
                th:text="'Next'"
                th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
             </a>
         </li>
 
         <li>
-            <a th:href="@{|/countrys?page=${totalPages - 1}&size=${pageSize}|}"
+            <a th:href="@{|/moviescrud?page=${totalPages - 1}&size=${pageSize}|}"
                th:text="'Last'"
                th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
             </a>
@@ -78,23 +71,30 @@
 <table border="2">
     <thead>
     <tr>
-        <th>Nombre</th>
-        <th>Delete</th>
-        <th>Update</th>
+        <th>Id</th>
+        <th>Título</th>
+        <th>Overview</th>
+        <th>Popularity</th>
+        <th>ReleaseDate</th>
+        <th>Eliminar</th>
+        <th>Modificar</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="country : ${countrys}">
-        <td>[[${country.countryName}]]</td>
+    <tr th:each="movie : ${movies}">
+        <td>[[${movie.movieId}]]</td>
+        <td>[[${movie.title}]]</td>
+        <td>[[${movie.overview}]]</td>
+        <td>[[${movie.popularity}]]</td>
+        <td>[[${movie.releaseDate}]]</td>
         <td>
-            <form action="/delete-country" method="post" th:inline="none">
-                <input type="hidden" name="countryId" th:value="${country.countryId}">
+            <form action="/delete-movie" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta película?')">
+                <input type="hidden" name="movieId" th:value="${movie.movieId}">
                 <button type="submit">Eliminar</button>
             </form>
         </td>
         <td>
-            <!-- Button to go to the update page -->
-            <a th:href="@{|/update-country?countryId=${country.countryId}|}">
+            <a th:href="@{|/updatemovie?movieId=${movie.movieId}|}">
                 <button>Update</button>
             </a>
         </td>

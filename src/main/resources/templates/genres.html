@@ -22,10 +22,14 @@
         <input type="submit" value="Buscar">
     </form>
     <form action="/genres" method="get">
-        <input type="submit" value="All">
+        <input type="submit" value="Todos">
     </form>
-
+    <a th:href="@{/home}">
+        <button>Volver</button>
+    </a>
 </div>
+
+
 
 <h1> New Genre </h1>
 <form action="/add-genre" method="post">

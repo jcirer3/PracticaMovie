@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Movie</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Movie </h1>
+<h1>Pelicula <span th:text="${movie.title}"></span></h1>
+
+<a th:href="@{/moviescrud}">
+    <button>Volver</button>
+</a>
+
+<table border="2">
+    <thead>
+    <tr>
+        <th>Keywords</th>
+        <th>Delete</th>
+        <th>Update</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="keyword : ${keywords}">
+        <td th:text="${keyword}"></td>
+        <td>
+            <form action="/deleteKeyword" method="post">
+                <input type="hidden" th:value="${keyword}" name="keywordName" />
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

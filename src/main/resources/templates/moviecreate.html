@@ -1,0 +1,36 @@
+<!DOCTYPE>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Person List</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="person.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+<h1>Create a New Movie</h1>
+<form action="/moviecreate" method="post">
+    <label for="title">Titulo:</label>
+    <input type="text" id="title" name="title" required><br>
+
+    <label for="overview">Overview:</label>
+    <textarea id="overview" name="overview" required></textarea><br>
+
+    <label for="popularity">Popularity:</label>
+    <input type="number" id="popularity" name="popularity" step="0.01" required><br>
+
+    <label for="releaseDate">Release Date:</label>
+    <input type="date" id="releaseDate" name="releaseDate" required><br>
+
+    <button type="submit">Create Movie</button>
+</form>
+<div th:if="${message}" class="message">
+    <p th:text="${message}"></p>
+</div>
+<a th:href="@{/moviescrud}">
+    <button>Volver</button>
+</a>
+</body>
+</html>
