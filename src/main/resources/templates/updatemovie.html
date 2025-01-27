@@ -14,26 +14,22 @@
     <button>Volver</button>
 </a>
 
-<table border="2">
-    <thead>
-    <tr>
-        <th>Keywords</th>
-        <th>Delete</th>
-        <th>Update</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="keyword : ${keywords}">
-        <td th:text="${keyword}"></td>
-        <td>
-            <form action="/deleteKeyword" method="post">
-                <input type="hidden" th:value="${keyword}" name="keywordName" />
-                <button type="submit">Eliminar</button>
-            </form>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<form action="/redirect" method="post">
+    <input type="hidden" name="movieId" th:value="${movie.movieId}">
+    <label for="tags">Busca por:</label>
+    <select id="tags" name="tags">
+        <option value="">Elige una opción</option>
+        <option value="keyword">Keyword</option>
+        <option value="genre">Genre</option>
+        <option value="language">Language</option>
+        <option value="country">Country</option>
+        <option value="company">Production company</option>
+        <option value="gender">Gender</option>
+        <option value="personaje">Personaje</option>
+    </select>
+
+    <input type="submit" value="Buscar">
+</form>
 
 </body>
 </html>

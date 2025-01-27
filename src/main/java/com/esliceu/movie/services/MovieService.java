@@ -140,8 +140,4 @@ public class MovieService {
     public Movie findById(Integer movieId) {
         return movieDAO.findById(movieId).get();
     }
-
-    public void deleteKeyword(Integer movieId, Integer keywordId) {
-        movieKeywordDAO.deleteByMovieIdAndKeywordId(movieId, keywordId);
-    }
 }

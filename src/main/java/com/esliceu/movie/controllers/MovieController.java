@@ -1,9 +1,6 @@
 package com.esliceu.movie.controllers;
 
-import com.esliceu.movie.models.Movie;
-import com.esliceu.movie.models.MovieKeywords;
-import com.esliceu.movie.models.Permission;
-import com.esliceu.movie.models.User;
+import com.esliceu.movie.models.*;
 import com.esliceu.movie.services.AuthorizationService;
 import com.esliceu.movie.services.KeywordService;
 import com.esliceu.movie.services.MovieService;
@@ -12,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Set;
@@ -158,12 +153,41 @@ public class MovieController {
     @GetMapping("/updatemovie")
     public String showUpdateMovieForm(@RequestParam("movieId") Integer movieId, Model model) {
         Movie movie = movieService.findById(movieId);
-        Set<String> keywordNames = getKeywords(movie);
-
-
         model.addAttribute("movie", movie);
-        model.addAttribute("keywords", keywordNames);
         return "updatemovie";
+    }
+
+    @PostMapping("/redirect")
+    public String redirectTo(@RequestParam("tags") String tag,
+                             @RequestParam("movieId") Integer movieId) {
+
+        switch (tag) {
+            case "keyword":
+                return "redirect:/updatemoviekeyword?movieId=" + movieId;
+            case "genre":
+                return "redirect:/updatemoviegenre?movieId=" + movieId;
+            case "language":
+                return "redirect:/updatemovielanguage?movieId=" + movieId;
+            case "country":
+                return "redirect:/updatemoviecountry?movieId=" + movieId;
+            case "company":
+                return "redirect:/updatemoviecompany?movieId=" + movieId;
+            case "gender":
+                return "redirect:/updatemoviegender?movieId=" + movieId;
+            case "personaje":
+                return "redirect:/updatemoviepersonaje?movieId=" + movieId;
+            default:
+                return "redirect:/error";
+        }
+    }
+
+    @GetMapping("/updatemoviekeyword")
+    public String updateKeyword(@RequestParam(value = "movieId", required = false) Integer movieId, Model model) {
+        Movie movie = movieService.findById(movieId);
+        Set<MovieKeywords> movieKeywords = movie.getKeywords();
+        model.addAttribute("movie", movie);
+        model.addAttribute("moviekeywords", movieKeywords);
+        return "updatemoviekeyword";
     }
 
     private static Set<String> getKeywords(Movie movie) {
@@ -174,22 +198,14 @@ public class MovieController {
         return keywordNames;
     }
 
-    @PostMapping("/deleteKeyword")
-    public String deleteKeyword(@RequestParam("keywordName") String keywordName,
-                                @RequestParam("movieId") Integer movieId, Model model) {
-        System.out.println("movieId: " + movieId);  // Para verificar en los logs que movieId está llegando
-        System.out.println("keywordName: " + keywordName);
+    @PostMapping("/deletekeyword")
+    public String deleteKeywordFromMovie(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("keywordId") Integer keywordId) {
 
-        Movie movie = movieService.findById(movieId);
-        Integer keywordId = keywordService.getKeywordIdByName(keywordName);
-        movieService.deleteKeyword(movieId, keywordId);
+        MovieKeywordsId movieKeywordsId = new MovieKeywordsId(movieId, keywordId);
 
-
-        Set<String> keywordNames = getKeywords(movie);
-
-        model.addAttribute("movie", movie);
-        model.addAttribute("keywords", keywordNames);
-
-        return "updatemovie";
+        keywordService.deleteMovieKeyword(movieKeywordsId);
+        return "redirect:/updatemoviekeyword?movieId=" + movieId;
     }
 }
