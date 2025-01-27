@@ -2,7 +2,10 @@ package com.esliceu.movie.services;
 
 import com.esliceu.movie.DAO.KeywordDAO;
 import com.esliceu.movie.models.Keyword;
+import com.esliceu.movie.models.Permission;
+import com.esliceu.movie.models.User;
 import com.google.gson.Gson;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +21,8 @@ import java.util.stream.Collectors;
 public class KeywordService {
     @Autowired
     KeywordDAO keywordDAO;
+    @Autowired
+    AuthorizationService authorizationService;
 
     public Page<Keyword> getPaginatedKeywords(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -39,6 +44,7 @@ public class KeywordService {
     }
 
     public void deleteKeyword(Integer keywordId) {
+
         Keyword keyword = keywordDAO.findById(keywordId).get();
         if (keyword != null) {
             keywordDAO.delete(keyword);

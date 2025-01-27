@@ -1,7 +1,12 @@
 package com.esliceu.movie.controllers;
 
+import com.esliceu.movie.models.Authorization;
 import com.esliceu.movie.models.Keyword;
+import com.esliceu.movie.models.Permission;
+import com.esliceu.movie.models.User;
+import com.esliceu.movie.services.AuthorizationService;
 import com.esliceu.movie.services.KeywordService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,6 +21,8 @@ import java.util.List;
 public class KeywordController {
     @Autowired
     KeywordService keywordService;
+    @Autowired
+    AuthorizationService authorizationService;
 
     @GetMapping("/keywords")
     public String listKeywords(
@@ -69,7 +76,11 @@ public class KeywordController {
     }
 
     @PostMapping("/delete-keyword")
-    public String deleteKeyword(@RequestParam Integer keywordId) {
+    public String deleteKeyword(@RequestParam Integer keywordId, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        Permission permission = authorizationService.findPermissionByName("KeywordPermission");
+        //Authorization authorization = authorizationService.findAuthorizationByIds(user.getUserId(), permission.getPermissionId());
+
         keywordService.deleteKeyword(keywordId);
         return "redirect:/keywords";
     }

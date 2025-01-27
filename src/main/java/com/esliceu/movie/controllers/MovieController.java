@@ -2,8 +2,12 @@ package com.esliceu.movie.controllers;
 
 import com.esliceu.movie.models.Movie;
 import com.esliceu.movie.models.MovieKeywords;
+import com.esliceu.movie.models.Permission;
+import com.esliceu.movie.models.User;
+import com.esliceu.movie.services.AuthorizationService;
 import com.esliceu.movie.services.KeywordService;
 import com.esliceu.movie.services.MovieService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -24,6 +28,8 @@ public class MovieController {
     MovieService movieService;
     @Autowired
     KeywordService keywordService;
+    @Autowired
+    AuthorizationService authorizationService;
 
     @GetMapping("/movies")
     public String showMovies(Model model) {
@@ -132,7 +138,7 @@ public class MovieController {
     }
 
     @PostMapping("/delete-movie")
-    public String deleteMovie(@RequestParam Integer movieId) {
+    public String deleteMovie(@RequestParam Integer movieId, HttpSession session) {
         movieService.deleteMovie(movieId);
         return "redirect:/moviescrud";
     }
@@ -157,7 +163,7 @@ public class MovieController {
 
         model.addAttribute("movie", movie);
         model.addAttribute("keywords", keywordNames);
-        return "moviecreate";
+        return "updatemovie";
     }
 
     private static Set<String> getKeywords(Movie movie) {

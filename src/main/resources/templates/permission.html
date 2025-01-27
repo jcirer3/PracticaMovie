@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Permisos</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Permisos</h1>
+
+<a th:href="@{/home}">
+    <button>Volver</button>
+</a>
+
+<table border="2">
+    <thead>
+    <tr>
+        <th>Permisos</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="permission : ${permissions}">
+        <td th:text="${permission.name}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
