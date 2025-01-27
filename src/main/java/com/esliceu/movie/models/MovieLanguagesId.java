@@ -24,6 +24,10 @@ public class MovieLanguagesId implements Serializable {
         this.languageRoleId = languageRoleId;
     }
 
+    public MovieLanguagesId(Integer languageId) {
+        this.languageId = languageId;
+    }
+
     public Integer getMovieId() {
         return movieId;
     }

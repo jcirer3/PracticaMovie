@@ -1,7 +1,9 @@
 package com.esliceu.movie.services;
 
 import com.esliceu.movie.DAO.GenreDAO;
+import com.esliceu.movie.DAO.MovieGenreDAO;
 import com.esliceu.movie.models.Genre;
+import com.esliceu.movie.models.MovieGenresId;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 public class GenreService {
     @Autowired
     GenreDAO genreDAO;
+    @Autowired
+    MovieGenreDAO movieGenreDAO;
 
     public Page<Genre> getPaginatedGenres(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -79,5 +83,13 @@ public class GenreService {
         Genre genre = genreDAO.findByGenreName(genreName);
         genreList.add(genre);
         return genreList;
+    }
+
+    public void deleteMovieGenre(MovieGenresId movieGenresId) {
+        movieGenreDAO.deleteById(movieGenresId);
+    }
+
+    public Genre findByGenreName(String genreName) {
+        return genreDAO.findByGenreName(genreName);
     }
 }

@@ -1,7 +1,9 @@
 package com.esliceu.movie.services;
 
 import com.esliceu.movie.DAO.LanguageDAO;
+import com.esliceu.movie.DAO.MovieLanguageDAO;
 import com.esliceu.movie.models.Language;
+import com.esliceu.movie.models.MovieLanguagesId;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,8 @@ import java.util.stream.Collectors;
 public class LanguageService {
     @Autowired
     LanguageDAO languageDAO;
+    @Autowired
+    MovieLanguageDAO movieLanguageDAO;
 
     public Page<Language> getPaginatedLanguages(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -79,5 +83,13 @@ public class LanguageService {
         Language language = languageDAO.findByLanguageName(languageName);
         languageList.add(language);
         return languageList;
+    }
+
+    public void deleteMovieLanguage(MovieLanguagesId movieLanguagesId) {
+        movieLanguageDAO.deleteById(movieLanguagesId);
+    }
+
+    public Language findByLanguageName(String languageName) {
+        return languageDAO.findByLanguageName(languageName);
     }
 }

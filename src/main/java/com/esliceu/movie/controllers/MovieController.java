@@ -1,20 +1,16 @@
 package com.esliceu.movie.controllers;
 
 import com.esliceu.movie.models.*;
-import com.esliceu.movie.services.AuthorizationService;
-import com.esliceu.movie.services.KeywordService;
-import com.esliceu.movie.services.MovieService;
+import com.esliceu.movie.services.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 public class MovieController {
@@ -24,7 +20,15 @@ public class MovieController {
     @Autowired
     KeywordService keywordService;
     @Autowired
-    AuthorizationService authorizationService;
+    MovieKeywordsService movieKeywordsService;
+    @Autowired
+    GenreService genreService;
+    @Autowired
+    MovieGenresService movieGenresService;
+    @Autowired
+    LanguageService languageService;
+    @Autowired
+    MovieLanguagesService movieLanguagesService;
 
     @GetMapping("/movies")
     public String showMovies(Model model) {
@@ -185,17 +189,13 @@ public class MovieController {
     public String updateKeyword(@RequestParam(value = "movieId", required = false) Integer movieId, Model model) {
         Movie movie = movieService.findById(movieId);
         Set<MovieKeywords> movieKeywords = movie.getKeywords();
+
+        String jsonToSend = keywordService.getKeywordJson();
+        model.addAttribute("jsonInfo", jsonToSend);
+
         model.addAttribute("movie", movie);
         model.addAttribute("moviekeywords", movieKeywords);
         return "updatemoviekeyword";
-    }
-
-    private static Set<String> getKeywords(Movie movie) {
-        Set<MovieKeywords> movieKeywords = movie.getKeywords();
-        Set<String> keywordNames = movieKeywords.stream()
-                .map(movieKeyword -> movieKeyword.getKeyword().getKeywordName())
-                .collect(Collectors.toSet());
-        return keywordNames;
     }
 
     @PostMapping("/deletekeyword")
@@ -207,5 +207,91 @@ public class MovieController {
 
         keywordService.deleteMovieKeyword(movieKeywordsId);
         return "redirect:/updatemoviekeyword?movieId=" + movieId;
+    }
+    @PostMapping("/addmoviekeyword")
+    public String addMovieKeyword(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("keywordName") String keywordName) {
+
+        Movie movie = movieService.findById(movieId);
+        Keyword keyword = keywordService.findByKeywordName(keywordName);
+        movieKeywordsService.save(movie, keyword);
+
+        return "redirect:/updatemoviekeyword?movieId=" + movieId;
+    }
+
+    @GetMapping("/updatemoviegenre")
+    public String updateGenre(@RequestParam(value = "movieId", required = false) Integer movieId, Model model) {
+        Movie movie = movieService.findById(movieId);
+        Set<MovieGenres> moviegenres = movie.getGenres();
+
+        String jsonToSend = movieService.getGenreJson();
+        model.addAttribute("jsonInfo", jsonToSend);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("moviegenres", moviegenres);
+        return "updatemoviegenre";
+    }
+
+    @PostMapping("/deletegenre")
+    public String deleteGenreFromMovie(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("genreId") Integer genreId) {
+
+        MovieGenresId movieGenresId = new MovieGenresId(movieId, genreId);
+
+        genreService.deleteMovieGenre(movieGenresId);
+        return "redirect:/updatemoviegenre?movieId=" + movieId;
+    }
+
+    @PostMapping("/addmoviegenre")
+    public String addMovieGenre(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("genreName") String genreName) {
+
+        Movie movie = movieService.findById(movieId);
+        Genre genre = genreService.findByGenreName(genreName);
+        movieGenresService.save(movie, genre);
+
+        return "redirect:/updatemoviegenre?movieId=" + movieId;
+    }
+
+    @GetMapping("/updatemovielanguage")
+    public String updateLanguage(@RequestParam(value = "movieId", required = false) Integer movieId, Model model) {
+        Movie movie = movieService.findById(movieId);
+        Set<MovieLanguages> movieLanguages = movie.getLanguages();
+
+        String jsonToSend = movieService.getLanguageJson();
+        model.addAttribute("jsonInfo", jsonToSend);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("movielanguages", movieLanguages);
+        return "updatemovielanguage";
+    }
+
+    @PostMapping("/deletelanguage")
+    public String deleteLanguageFromMovie(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("languageId") Integer languageId) {
+
+
+        MovieLanguagesId movieLanguagesId = new MovieLanguagesId(movieId, languageId, 2);
+        languageService.deleteMovieLanguage(movieLanguagesId);
+
+        return "redirect:/updatemovielanguage?movieId=" + movieId;
+    }
+
+    @PostMapping("/addmovielanguage")
+    public String addMovieLanguage(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("languageName") String languageName) {
+
+        Movie movie = movieService.findById(movieId);
+        Language language = languageService.findByLanguageName(languageName);
+        LanguageRole languageRole = new LanguageRole();
+
+        movieLanguagesService.save(movie, language, languageRole);
+
+        return "redirect:/updatemovielanguage?movieId=" + movieId;
     }
 }
