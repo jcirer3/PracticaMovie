@@ -20,7 +20,11 @@ public class MovieApplication implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(
 				loginInterceptor
-		).addPathPatterns("/start", "/nav", "/reset", "/getcoin",
-				"/getkey", "/open", "/endform", "/scores");
+		).addPathPatterns("/companys", "/countrys", "/departments", "/genders", "/genres", "/keywords",
+				"/languageroles", "/languages", "/managePermissions", "/moviecreate", "/moviescrud",
+				"/permission", "/persons", "/updatecompany", "/updatecountry", "/updatedepartment",
+				"/updategender", "/updategenre", "/updatekeyword", "/updatelanguage", "/updatelanguagerole",
+				"/updatemovie", "/updatemoviecrew", "/updatemoviegenre", "/updatemoviekeyword", "/updatemovielanguage",
+				"/updateperson");
 	}
 }

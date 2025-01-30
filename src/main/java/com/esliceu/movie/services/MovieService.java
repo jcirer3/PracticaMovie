@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +27,8 @@ public class MovieService {
     MovieCrewDAO movieCrewDAO;
     @Autowired
     LanguageDAO languageDAO;
+    @Autowired
+    PersonDAO personDAO;
 
 
     public Page<Movie> getPaginatedMovies(int page, int size) {
@@ -146,5 +149,26 @@ public class MovieService {
 
     public Movie findById(Integer movieId) {
         return movieDAO.findById(movieId).get();
+    }
+
+    public String getPersonJson(Set<MovieCrew> movieCrews) {
+        List<String> persons = movieCrews.stream()
+                .map(mc -> mc.getPerson().getPersonName())
+                .distinct()
+                .collect(Collectors.toList());
+
+        Gson gson = new Gson();
+        return gson.toJson(persons);
+    }
+
+    public String getAllJson() {
+        List<Person> persons = personDAO.findAll();
+        List<String> personsName = persons.stream()
+                .map(p -> p.getPersonName())
+                .distinct()
+                .collect(Collectors.toList());
+
+        Gson gson = new Gson();
+        return gson.toJson(personsName);
     }
 }

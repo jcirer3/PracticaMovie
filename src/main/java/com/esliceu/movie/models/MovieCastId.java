@@ -18,6 +18,12 @@ public class MovieCastId implements Serializable {
     public MovieCastId() {
     }
 
+    public MovieCastId(Integer movieId, Integer genderId, Integer personId) {
+        this.movieId = movieId;
+        this.genderId = genderId;
+        this.personId = personId;
+    }
+
     public Integer getMovieId() {
         return movieId;
     }

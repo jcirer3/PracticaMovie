@@ -89,6 +89,7 @@
         <th>Overview</th>
         <th>Popularity</th>
         <th>ReleaseDate</th>
+        <th>Ver Ficha</th>
     </tr>
     </thead>
     <tbody>
@@ -98,6 +99,11 @@
         <td>[[${movie.overview}]]</td>
         <td>[[${movie.popularity}]]</td>
         <td>[[${movie.releaseDate}]]</td>
+        <td>
+            <a th:href="@{/moviedates/{id}(id=${movie.movieId})}">
+                <button>Ver Ficha</button>
+            </a>
+        </td>
     </tr>
     </tbody>
 </table>

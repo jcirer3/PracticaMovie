@@ -1,9 +1,6 @@
 package com.esliceu.movie.controllers;
 
-import com.esliceu.movie.models.Authorization;
-import com.esliceu.movie.models.Keyword;
-import com.esliceu.movie.models.Permission;
-import com.esliceu.movie.models.User;
+import com.esliceu.movie.models.*;
 import com.esliceu.movie.services.AuthorizationService;
 import com.esliceu.movie.services.KeywordService;
 import jakarta.servlet.http.HttpSession;
@@ -28,7 +25,28 @@ public class KeywordController {
     public String listKeywords(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            Model model) {
+            Model model,
+            HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            model.addAttribute("message", "Debes iniciar sesión para acceder a esta página.");
+            return "home";
+        }
+        Permission permission = authorizationService.findPermissionByName("KeywordPermission");
+        if (permission == null) {
+            model.addAttribute("message", "No tienes permiso.");
+            return "home";
+        }
+
+        Authorization authorization = authorizationService.findAuthorizationByIds(
+                user.getUserId(), permission.getPermissionId());
+
+        if (authorization == null || authorization.getState() != AuthorizationState.ACEPTED) {
+            model.addAttribute("message", "No tienes permisos para acceder a esta página.");
+            return "home";
+        }
+
         Page<Keyword> keywordPage = keywordService.getPaginatedKeywords(page, size);
 
         String jsonToSend = keywordService.getKeywordJson();
@@ -76,11 +94,7 @@ public class KeywordController {
     }
 
     @PostMapping("/delete-keyword")
-    public String deleteKeyword(@RequestParam Integer keywordId, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        Permission permission = authorizationService.findPermissionByName("KeywordPermission");
-        //Authorization authorization = authorizationService.findAuthorizationByIds(user.getUserId(), permission.getPermissionId());
-
+    public String deleteKeyword(@RequestParam Integer keywordId) {
         keywordService.deleteKeyword(keywordId);
         return "redirect:/keywords";
     }

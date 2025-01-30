@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Permisos</title>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Gestionar Permisos</h1>
+
+<a th:href="@{/home}">
+    <button>Volver</button>
+</a>
+
+<h1>Gestionar Solicitudes</h1>
+
+<table border="2">
+    <thead>
+    <tr>
+        <th>Usuario</th>
+        <th>Permiso</th>
+        <th>Estado</th>
+        <th>Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="authorization : ${pendingAuthorizations}">
+        <td th:text="${authorization.user.userName}"></td>
+        <td th:text="${authorization.permission.name}"></td>
+        <td th:text="${authorization.state}"></td>
+        <td>
+            <form th:action="@{/updateAuthorization}" method="post">
+                <input type="hidden" name="userId" th:value="${authorization.user.userId}" />
+                <input type="hidden" name="permissionId" th:value="${authorization.permission.permissionId}" />
+                <button name="state" value="ACEPTED">Aceptar</button>
+                <button name="state" value="DECLINED">Rechazar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

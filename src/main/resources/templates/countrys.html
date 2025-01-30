@@ -87,7 +87,7 @@
     <tr th:each="country : ${countrys}">
         <td>[[${country.countryName}]]</td>
         <td>
-            <form action="/delete-country" method="post" th:inline="none">
+            <form action="/delete-country" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este país?')">
                 <input type="hidden" name="countryId" th:value="${country.countryId}">
                 <button type="submit">Eliminar</button>
             </form>

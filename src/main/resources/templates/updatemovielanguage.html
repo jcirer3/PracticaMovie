@@ -41,7 +41,7 @@
     <tr th:each="movielanguage : ${movielanguages}">
         <td th:text="${movielanguage.language.languageName}"></td>
         <td>
-            <form action="/deletelanguage" method="post">
+            <form action="/deletelanguage" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este idioma?')">
                 <input type="hidden" th:value="${movielanguage.movie.movieId}" name="movieId" />
                 <input type="hidden" th:value="${movielanguage.language.languageId}" name="languageId" />
                 <button type="submit">Eliminar</button>

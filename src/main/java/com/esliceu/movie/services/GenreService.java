@@ -92,4 +92,8 @@ public class GenreService {
     public Genre findByGenreName(String genreName) {
         return genreDAO.findByGenreName(genreName);
     }
+
+    public List<Genre> findAll() {
+        return genreDAO.findAll();
+    }
 }

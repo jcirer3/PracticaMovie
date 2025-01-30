@@ -29,9 +29,20 @@ public class MovieController {
     LanguageService languageService;
     @Autowired
     MovieLanguagesService movieLanguagesService;
+    @Autowired
+    PersonService personService;
+    @Autowired
+    MovieCrewService movieCrewService;
+    @Autowired
+    AuthorizationService authorizationService;
+    @Autowired
+    GenderService genderService;
+    @Autowired
+    MovieCastService movieCastService;
 
     @GetMapping("/movies")
     public String showMovies(Model model) {
+
         model.addAttribute("currentPage", 0);
         model.addAttribute("totalPages", 1);
         model.addAttribute("pageSize", 0);
@@ -44,6 +55,7 @@ public class MovieController {
                                @RequestParam(defaultValue = "0") int page,
                                @RequestParam(defaultValue = "20") int size,
                                Model model) {
+
 
         if (tags.equals("todas")) {
             Page<Movie> moviePage = movieService.getPaginatedMovies(page, size);
@@ -109,7 +121,28 @@ public class MovieController {
     @GetMapping("/moviescrud")
     public String showMoviesCrud(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "20") int size,
-                                 Model model) {
+                                 Model model,
+                                 HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            model.addAttribute("message", "Debes iniciar sesión para acceder a esta página.");
+            return "home";
+        }
+        Permission permission = authorizationService.findPermissionByName("MoviePermission");
+        if (permission == null) {
+            model.addAttribute("message", "No tienes permiso.");
+            return "home";
+        }
+
+        Authorization authorization = authorizationService.findAuthorizationByIds(
+                user.getUserId(), permission.getPermissionId());
+
+        if (authorization == null || authorization.getState() != AuthorizationState.ACEPTED) {
+            model.addAttribute("message", "No tienes permisos para acceder a esta página.");
+            return "home";
+        }
+
         Page<Movie> moviePage = movieService.getPaginatedMovies(page, size);
 
         String jsonToSend = movieService.getMovieJson();
@@ -164,7 +197,6 @@ public class MovieController {
     @PostMapping("/redirect")
     public String redirectTo(@RequestParam("tags") String tag,
                              @RequestParam("movieId") Integer movieId) {
-
         switch (tag) {
             case "keyword":
                 return "redirect:/updatemoviekeyword?movieId=" + movieId;
@@ -172,14 +204,10 @@ public class MovieController {
                 return "redirect:/updatemoviegenre?movieId=" + movieId;
             case "language":
                 return "redirect:/updatemovielanguage?movieId=" + movieId;
-            case "country":
-                return "redirect:/updatemoviecountry?movieId=" + movieId;
-            case "company":
-                return "redirect:/updatemoviecompany?movieId=" + movieId;
-            case "gender":
-                return "redirect:/updatemoviegender?movieId=" + movieId;
-            case "personaje":
-                return "redirect:/updatemoviepersonaje?movieId=" + movieId;
+            case "crew":
+                return "redirect:/updatemoviecrew?movieId=" + movieId;
+            case "cast":
+                return "redirect:/updatemoviecast?movieId=" + movieId;
             default:
                 return "redirect:/error";
         }
@@ -293,5 +321,108 @@ public class MovieController {
         movieLanguagesService.save(movie, language, languageRole);
 
         return "redirect:/updatemovielanguage?movieId=" + movieId;
+    }
+
+    @GetMapping("/updatemoviecrew")
+    public String updateCrew(@RequestParam(value = "movieId", required = false) Integer movieId, Model model) {
+        Movie movie = movieService.findById(movieId);
+        Set<MovieCrew> movieCrews = movie.getJob();
+
+        String jsonToSend = movieService.getAllJson();
+        model.addAttribute("jsonInfo", jsonToSend);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("moviecrews", movieCrews);
+        return "updatemoviecrew";
+    }
+
+    @PostMapping("/deletecrew")
+    public String deleteCrewFromMovie(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("personId") Integer personId,
+            @RequestParam("department") Integer departmentId) {
+
+        MovieCrewId movieCrewId = new MovieCrewId(movieId, personId, departmentId);
+        personService.deleteMovieCrew(movieCrewId);
+
+        return "redirect:/updatemoviecrew?movieId=" + movieId;
+    }
+
+    @PostMapping("/addmoviecrew")
+    public String addMovieCrew(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("personName") String personName,
+            @RequestParam("job") String job) {
+
+        Movie movie = movieService.findById(movieId);
+        Person person = personService.findByPersonName(personName);
+        Department department = new Department();
+        movieCrewService.save(movie, person, department, job);
+        return "redirect:/updatemoviecrew?movieId=" + movieId;
+    }
+
+
+    @GetMapping("/updatemoviecast")
+    public String updateCast(@RequestParam(value = "movieId", required = false) Integer movieId, Model model) {
+        List<Gender> genders = genderService.findAll();
+        model.addAttribute("genders", genders);
+
+        Movie movie = movieService.findById(movieId);
+        Set<MovieCast> movieCasts = movie.getCharacterName();
+
+        String jsonToSend = movieService.getAllJson();
+        model.addAttribute("jsonInfo", jsonToSend);
+
+        model.addAttribute("movie", movie);
+        model.addAttribute("moviecasts", movieCasts);
+        return "updatemoviecast";
+    }
+
+    @PostMapping("/deletecast")
+    public String deleteCastFromMovie(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("personId") Integer personId,
+            @RequestParam("genderId") Integer genderId) {
+
+
+        personService.deleteMovieCast(movieId, personId, genderId);
+
+        return "redirect:/updatemoviecast?movieId=" + movieId;
+    }
+
+    @PostMapping("/addmoviecast")
+    public String addMovieCast(
+            @RequestParam("movieId") Integer movieId,
+            @RequestParam("personName") String personName,
+            @RequestParam("genderId") Integer genderId,
+            @RequestParam("characterName") String characterName) {
+
+        Movie movie = movieService.findById(movieId);
+        Person person = personService.findByPersonName(personName);
+        Gender gender = genderService.findById(genderId);
+        movieCastService.save(movie, person, gender, characterName);
+        return "redirect:/updatemoviecast?movieId=" + movieId;
+    }
+
+    @GetMapping("/moviedates/{id}")
+    public String getMovieDetails(@PathVariable Integer id, Model model) {
+        Movie movie = movieService.findById(id);
+        Set<MovieKeywords> movieKeywords = movie.getKeywords();
+        Set<MovieGenres> moviegenres = movie.getGenres();
+        Set<MovieLanguages> movieLanguages = movie.getLanguages();
+        Set<ProductionCountry> productionCompanies = movie.getCountries();
+        Set<MovieCompany> companies = movie.getCompanies();
+        Set<MovieCast> movieCast = movie.getCharacterName();
+        Set<MovieCrew> movieCrew = movie.getJob();
+
+        model.addAttribute("moviecasts", movieCast);
+        model.addAttribute("moviecrews", movieCrew);
+        model.addAttribute("companys", companies);
+        model.addAttribute("productrioncompanys", productionCompanies);
+        model.addAttribute("movielanguages", movieLanguages);
+        model.addAttribute("moviegenres", moviegenres);
+        model.addAttribute("moviekeywords", movieKeywords);
+        model.addAttribute("movie", movie);
+        return "moviedates";
     }
 }

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles de la Película</title>
+    <link rel="stylesheet" type="text/css" href="ficha.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: darkgrey;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+    margin-top: 20px;
+}
+
+a button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+a button:hover {
+    background-color: #0056b3;
+}
+
+div {
+    background: white;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+p {
+    font-size: 18px;
+    color: #555;
+}
+
+strong {
+    color: #000;
+}
+
+h2 {
+    color: #007bff;
+    border-bottom: 2px solid #007bff;
+    display: inline-block;
+    padding-bottom: 5px;
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    background: #e9ecef;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+    </style>
+</head>
+<body>
+
+<h1>Detalles de la Película</h1>
+
+<a th:href="@{/movies}">
+    <button>Volver</button>
+</a>
+
+<div th:if="${error}">
+    <p th:text="${error}"></p>
+</div>
+
+<div th:if="${movie}">
+    <p><strong>Título:</strong> <span th:text="${movie.title}"></span></p>
+    <p><strong>Descripción:</strong> <span th:text="${movie.overview}"></span></p>
+    <p><strong>Popularidad:</strong> <span th:text="${movie.popularity}"></span></p>
+    <p><strong>Fecha de lanzamiento:</strong> <span th:text="${movie.releaseDate}"></span></p>
+    <p><strong>Presupuesto:</strong> <span th:text="${movie.budget}"></span></p>
+    <p><strong>Ingresos:</strong> <span th:text="${movie.revenue}"></span></p>
+    <p><strong>Duración:</strong> <span th:text="${movie.runtime}"></span> min</p>
+    <p><strong>Estado:</strong> <span th:text="${movie.movieStatus}"></span></p>
+    <p><strong>Tagline:</strong> <span th:text="${movie.tagline}"></span></p>
+
+    <h2>Palabras Clave</h2>
+    <ul>
+        <li th:each="moviekeyword : ${moviekeywords}" th:text="${moviekeyword.keyword.keywordName}"></li>
+    </ul>
+
+    <h2>Géneros</h2>
+    <ul>
+        <li th:each="moviegenre : ${moviegenres}" th:text="${moviegenre.genre.genreName}"></li>
+    </ul>
+
+    <h2>Language</h2>
+    <ul>
+        <li th:each="movielanguage : ${movielanguages}" th:text="${movielanguage.language.languageName}"></li>
+    </ul>
+
+    <h2>Country</h2>
+    <ul>
+        <li th:each="productrioncompany : ${productrioncompanys}" th:text="${productrioncompany.country.countryName}"></li>
+    </ul>
+
+    <h2>Company</h2>
+    <ul>
+        <li th:each="company : ${companys}" th:text="${company.productionCompany.companyName}"></li>
+    </ul>
+
+    <h2>Actors</h2>
+    <ul>
+        <li th:each="moviecast : ${moviecasts}">
+            <span th:text="${moviecast.person.personName}"></span> -
+            <span th:text="${moviecast.characterName}"></span>
+        </li>
+    </ul>
+
+    <h2>Equipo de trabajo</h2>
+    <ul>
+        <li th:each="moviecrew : ${moviecrews}">
+            <span th:text="${moviecrew.person.personName}"></span> -
+            <span th:text="${moviecrew.job}"></span>
+        </li>
+    </ul>
+
+
+</div>
+
+</body>
+</html>

@@ -1,6 +1,11 @@
 package com.esliceu.movie.services;
 
+import com.esliceu.movie.DAO.MovieCastDAO;
+import com.esliceu.movie.DAO.MovieCrewDAO;
 import com.esliceu.movie.DAO.PersonDAO;
+import com.esliceu.movie.models.MovieCast;
+import com.esliceu.movie.models.MovieCastId;
+import com.esliceu.movie.models.MovieCrewId;
 import com.esliceu.movie.models.Person;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +23,10 @@ import java.util.stream.Collectors;
 public class PersonService {
     @Autowired
     PersonDAO personDAO;
+    @Autowired
+    MovieCrewDAO movieCrewDAO;
+    @Autowired
+    MovieCastDAO movieCastDAO;
 
     public Page<Person> getPaginatedPersons(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -79,5 +88,18 @@ public class PersonService {
         Person person = personDAO.findByPersonName(personName);
         personList.add(person);
         return personList;
+    }
+
+    public void deleteMovieCrew(MovieCrewId movieCrewId) {
+        movieCrewDAO.deleteById(movieCrewId);
+    }
+
+    public Person findByPersonName(String personName) {
+        return personDAO.findByPersonName(personName);
+    }
+
+    public void deleteMovieCast(Integer movieId, Integer personId, Integer genderId) {
+        MovieCast movieCast = movieCastDAO.findByMovie_MovieIdAndPerson_PersonIdAndGender_GenderId(movieId, personId, genderId);
+        movieCastDAO.delete(movieCast);
     }
 }

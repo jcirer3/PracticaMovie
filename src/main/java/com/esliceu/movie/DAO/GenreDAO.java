@@ -12,7 +12,4 @@ import java.util.List;
 public interface GenreDAO extends JpaRepository<Genre, Integer> {
     Page<Genre> findAll(Pageable pageable);
     Genre findByGenreName(String genreName);
-
-    @Query("SELECT DISTINCT g.genreName FROM Genre g")
-    List<String> getAllGenres();
 }

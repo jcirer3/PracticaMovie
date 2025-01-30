@@ -87,7 +87,7 @@
     <tr th:each="company : ${companys}">
         <td>[[${company.companyName}]]</td>
         <td>
-            <form action="/delete-company" method="post" th:inline="none">
+            <form action="/delete-company" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta compañía?')">
                 <input type="hidden" name="companyId" th:value="${company.companyId}">
                 <button type="submit">Eliminar</button>
             </form>

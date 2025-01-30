@@ -87,7 +87,7 @@
     <tr th:each="keyword : ${keywords}">
         <td>[[${keyword.keywordName}]]</td>
         <td>
-            <form action="/delete-keyword" method="post" th:inline="none">
+            <form action="/delete-keyword" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta keyword?')">
                 <input type="hidden" name="keywordId" th:value="${keyword.keywordId}">
                 <button type="submit">Eliminar</button>
             </form>

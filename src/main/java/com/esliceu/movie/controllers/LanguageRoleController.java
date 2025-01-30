@@ -1,8 +1,9 @@
 package com.esliceu.movie.controllers;
 
-import com.esliceu.movie.models.Language;
-import com.esliceu.movie.models.LanguageRole;
+import com.esliceu.movie.models.*;
+import com.esliceu.movie.services.AuthorizationService;
 import com.esliceu.movie.services.LanguageRoleService;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -17,12 +18,35 @@ import java.util.List;
 public class LanguageRoleController {
     @Autowired
     LanguageRoleService languageRoleService;
+    @Autowired
+    AuthorizationService authorizationService;
 
     @GetMapping("/languageroles")
     public String listLanguageRoles(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            Model model) {
+            Model model,
+            HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            model.addAttribute("message", "Debes iniciar sesión para acceder a esta página.");
+            return "home";
+        }
+        Permission permission = authorizationService.findPermissionByName("LanguageRolePermission");
+        if (permission == null) {
+            model.addAttribute("message", "No tienes permiso.");
+            return "home";
+        }
+
+        Authorization authorization = authorizationService.findAuthorizationByIds(
+                user.getUserId(), permission.getPermissionId());
+
+        if (authorization == null || authorization.getState() != AuthorizationState.ACEPTED) {
+            model.addAttribute("message", "No tienes permisos para acceder a esta página.");
+            return "home";
+        }
+
         Page<LanguageRole> languageRolePage = languageRoleService.getPaginatedLanguagesRole(page, size);
 
         String jsonToSend = languageRoleService.getLanguageJson();

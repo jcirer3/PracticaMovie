@@ -87,7 +87,7 @@
     <tr th:each="department : ${departments}">
         <td>[[${department.departmentName}]]</td>
         <td>
-            <form action="/delete-department" method="post" th:inline="none">
+            <form action="/delete-department" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este departamento?')">
                 <input type="hidden" name="departmentId" th:value="${department.departmentId}">
                 <button type="submit">Eliminar</button>
             </form>

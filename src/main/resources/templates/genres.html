@@ -89,7 +89,7 @@
     <tr th:each="genre : ${genres}">
         <td>[[${genre.genreName}]]</td>
         <td>
-            <form action="/delete-genre" method="post" th:inline="none">
+            <form action="/delete-genre" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este genero?')">
                 <input type="hidden" name="genreId" th:value="${genre.genreId}">
                 <button type="submit">Eliminar</button>
             </form>

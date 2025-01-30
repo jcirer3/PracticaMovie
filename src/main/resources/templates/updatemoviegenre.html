@@ -41,7 +41,7 @@
     <tr th:each="moviegenre : ${moviegenres}">
         <td th:text="${moviegenre.genre.genreName}"></td>
         <td>
-            <form action="/deletegenre" method="post">
+            <form action="/deletegenre" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este genero?')">
                 <input type="hidden" th:value="${moviegenre.movie.movieId}" name="movieId" />
                 <input type="hidden" th:value="${moviegenre.genre.genreId}" name="genreId" />
                 <button type="submit">Eliminar</button>

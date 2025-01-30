@@ -41,7 +41,7 @@
     <tr th:each="moviekeyword : ${moviekeywords}">
         <td th:text="${moviekeyword.keyword.keywordName}"></td>
         <td>
-            <form action="/deletekeyword" method="post">
+            <form action="/deletekeyword" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta keyword?')">
                 <input type="hidden" th:value="${moviekeyword.movie.movieId}" name="movieId" />
                 <input type="hidden" th:value="${moviekeyword.keyword.keywordId}" name="keywordId" />
                 <button type="submit">Eliminar</button>

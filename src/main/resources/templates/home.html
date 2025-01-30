@@ -3,10 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #444;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: #007bff;
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+
+        a {
+            display: inline-block;
+            text-decoration: none;
+            background-color: darkgrey;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        div {
+            margin-top: 15px;
+        }
+
+        p {
+            font-weight: bold;
+            color: #d9534f;
+        }
+    </style>
+
 </head>
 <body>
 
-<h1>Estàs en HOME</h1>
+<h1>Home</h1>
 
 <h3>Categorias</h3>
 <a href="/persons">Persons</a>
@@ -20,11 +67,24 @@
 <a href="/languageroles">Language Roles</a>
 <a href="/moviescrud">Movie CRUD</a>
 
+<div th:if="${message}">
+    <p th:text="${message}"></p>
+</div>
+
 <h3>CONSULTAR MOVIES</h3>
 <a href="/movies">Movies</a>
 
 <h3>Permisos</h3>
 <a href="/permission">Permission</a>
+<div th:if="${login}">
+    <p th:text="${login}"></p>
+</div>
+
+<h3>Gestionar permisos (solo admin)</h3>
+<a href="/managePermissions">Admin</a>
+<div th:if="${error}">
+    <p th:text="${error}"></p>
+</div>
 
 </body>
 </html>

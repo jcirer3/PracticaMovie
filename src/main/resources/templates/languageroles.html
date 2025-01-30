@@ -87,7 +87,7 @@
     <tr th:each="languagerole : ${languageroles}">
         <td>[[${languagerole.languageRole}]]</td>
         <td>
-            <form action="/delete-languagerole" method="post" th:inline="none">
+            <form action="/delete-languagerole" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este role?')">
                 <input type="hidden" name="roleId" th:value="${languagerole.roleId}">
                 <button type="submit">Eliminar</button>
             </form>

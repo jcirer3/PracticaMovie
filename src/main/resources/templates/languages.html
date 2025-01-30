@@ -89,7 +89,7 @@
         <td>[[${language.languageName}]]</td>
         <td>[[${language.languageCode}]]</td>
         <td>
-            <form action="/delete-language" method="post" th:inline="none">
+            <form action="/delete-language" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este idioma?')">
                 <input type="hidden" name="languageId" th:value="${language.languageId}">
                 <button type="submit">Eliminar</button>
             </form>

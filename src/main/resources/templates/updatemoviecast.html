@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Movie</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script src="person.js" defer></script>
+    <link rel="stylesheet" type="text/css" href="personstyle.css">
+</head>
+<body>
+
+<h1>Update Movie</h1>
+<h1>Pelicula <span th:text="${movie.title}"></span></h1>
+
+<script th:inline="javascript">
+    var jsonInfo = /*[[${jsonInfo}]]*/ {};e
+</script>
+
+<div class="ui-widget">
+    <form action="/addmoviecast" method="post">
+        <input type="hidden" name="movieId" th:value="${movie.movieId}" />
+        <label for="tags">Nombre del actor: </label>
+        <input type="text" id="tags" name="personName" required>
+        <label for="characterName">Nombre del personaje: </label>
+        <input type="text" id="characterName" name="characterName" required>
+        <select id="gender" name="genderId" required>
+            <option value="" disabled selected>Seleccione un género</option>
+            <option th:each="gender : ${genders}" th:value="${gender.genderId}" th:text="${gender.gender}"></option>
+        </select>
+        <input type="submit" value="Añadir">
+    </form>
+    <a th:href="@{/home}">
+        <button>Volver</button>
+    </a>
+</div>
+
+<table border="2">
+    <thead>
+    <tr>
+        <th>Persona</th>
+        <th>Personaje</th>
+        <th>Delete</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="moviecast : ${moviecasts}">
+        <td th:text="${moviecast.person.personName}"></td>
+        <td th:text="${moviecast.characterName}"></td>
+        <td>
+            <form action="/deletecast" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este actor?')">
+                <input type="hidden" th:value="${moviecast.movie.movieId}" name="movieId" />
+                <input type="hidden" th:value="${moviecast.person.personId}" name="personId" />
+                <input type="hidden" th:value="${moviecast.gender.genderId}" name="genderId" />
+                <button type="submit">Eliminar</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

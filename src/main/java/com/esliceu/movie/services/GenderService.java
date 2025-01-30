@@ -80,4 +80,12 @@ public class GenderService {
         genderList.add(gender);
         return genderList;
     }
+
+    public List<Gender> findAll() {
+        return genderDAO.findAll();
+    }
+
+    public Gender findById(Integer genderId) {
+        return genderDAO.findById(genderId).orElse(null);
+    }
 }

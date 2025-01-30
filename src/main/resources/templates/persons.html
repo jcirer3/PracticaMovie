@@ -89,7 +89,7 @@
     <tr th:each="person : ${persons}">
         <td>[[${person.personName}]]</td>
         <td>
-            <form action="/delete-person" method="post" th:inline="none">
+            <form action="/delete-person" method="post" th:inline="none" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta persona?')">
                 <input type="hidden" name="personId" th:value="${person.personId}">
                 <button type="submit">Eliminar</button>
             </form>

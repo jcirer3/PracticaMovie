@@ -13,15 +13,39 @@
     <button>Volver</button>
 </a>
 
+<h2>Mis Permisos</h2>
 <table border="2">
     <thead>
     <tr>
-        <th>Permisos</th>
+        <th>Permiso</th>
+        <th>Estado</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="permission : ${permissions}">
+    <tr th:each="authorization : ${authorizations}">
+        <td th:text="${authorization.permission.name}"></td>
+        <td th:text="${authorization.state}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Solicitar Permisos</h2>
+<table border="2">
+    <thead>
+    <tr>
+        <th>Permiso</th>
+        <th>Acción</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="permission : ${allPermissions}">
         <td th:text="${permission.name}"></td>
+        <td>
+            <form th:action="@{/requestPermission}" method="post">
+                <input type="hidden" name="permissionId" th:value="${permission.permissionId}" />
+                <button type="submit">Solicitar</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
